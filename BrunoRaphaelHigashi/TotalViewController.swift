@@ -67,6 +67,7 @@ class TotalViewController: UIViewController {
         var totalIOF: Double = 0
         var currency: Double = 0
         var iofTax: Double = 0
+        var stateTax: Double = 0
         let fetchRequest: NSFetchRequest<Product> = Product.fetchRequest()
         let sortDescriptor = NSSortDescriptor(key: "name", ascending: true)
         fetchRequest.sortDescriptors = [sortDescriptor]
@@ -96,10 +97,15 @@ class TotalViewController: UIViewController {
             
             for data in dataSource {
                 
+                stateTax = (data.statesTaxes?.tax)!
                 totalUS += (data.usPrice)
                 //lblTotalus.text = "\(totalUS)"
                 lblTotalus.text = String(format: "%0.2f", totalUS)
-                totalBRL += ((data.usPrice) * currency) * (1 + (iofTax/100))
+                if data.iof == true {
+                    totalBRL += ((data.usPrice * (1 + stateTax/100)) * currency) * (1 + (iofTax/100))
+                }else{
+                    totalBRL += ((data.usPrice * (1 + stateTax/100)) * currency)
+                }
                 //lblTotalbrl.text = "\(totalBRL)"
                 lblTotalbrl.text = String(format: "%0.2f", totalBRL)
                 totalIOF += ((data.usPrice) * currency) * (iofTax/100)
