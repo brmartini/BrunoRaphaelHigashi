@@ -98,12 +98,12 @@ class TotalViewController: UIViewController {
             for data in dataSource {
                 
                 stateTax = (data.statesTaxes?.tax)!
-                totalUS += (data.usPrice)
+                totalUS += (data.usPrice) * (1 + stateTax/100)
                 //lblTotalus.text = "\(totalUS)"
                 lblTotalus.text = String(format: "%0.2f", totalUS)
                 if data.iof == true {
-                    totalBRL += ((data.usPrice * (1 + stateTax/100)) * currency) * (1 + (iofTax/100))
-                    totalIOF += ((data.usPrice) * currency) * (iofTax/100)
+                    totalBRL += ((data.usPrice * (1 + stateTax/100)) * currency) * (1 + iofTax/100)
+                    totalIOF += ((data.usPrice) * currency) * (iofTax)
                 }else{
                     totalBRL += ((data.usPrice * (1 + stateTax/100)) * currency)
                     
